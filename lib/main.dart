@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_flickbuy_app/src/common_widgets/my_home_page.dart';
-
-// 1. Define a provider
-// This provider will hold an integer, our counter's state.
-final counterProvider = StateProvider<int>((ref) => 0);
+import 'package:mobile_flickbuy_app/src/features/auth/presentation/sign_in_screen.dart';
 
 void main() {
-  // 2. Wrap your MyApp widget with ProviderScope
+  // Wrap your MyApp widget with ProviderScope
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -26,7 +22,7 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Riverpod Counter Example'),
+      home: const SignInScreen(),
     );
   }
 }

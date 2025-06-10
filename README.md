@@ -49,7 +49,7 @@ lib/
     * `exceptions/`: Home for custom exception classes used throughout the application to handle specific error cases gracefully.
 
     * `features/`: **This is the heart of the app.** Each subdirectory within `features` represents a distinct feature (e.g., `auth`, `products`). Each feature folder is self-contained and follows a layered architecture:
-        * `application/`: Contains the business logic and state management (Riverpod Notifiers).
+        * `controllers/`: Contains the business logic and state management (Riverpod Notifiers).
         * `data/`: Implements the repositories for fetching data from sources like Appwrite.
         * `domain/`: Defines the core data models and business objects (e.g., `Product`, `User`).
         * `presentation/`: Holds the UI components (screens and widgets) for the feature.

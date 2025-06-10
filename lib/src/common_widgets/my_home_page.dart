@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_flickbuy_app/main.dart';
+
+// Define a provider
+// This provider will hold an integer, our counter's state.
+final _counterProvider = StateProvider<int>((ref) => 0);
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key, required this.title});
@@ -8,13 +11,13 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 3. Watch the provider to get its current state
+    // 1. Watch the provider to get its current state
     // and to rebuild the widget when the state changes.
-    final count = ref.watch(counterProvider);
+    final count = ref.watch(_counterProvider);
 
-    // 4. Read the provider's notifier to access methods
+    // 2. Read the provider's notifier to access methods
     // that can change the state (e.g., increment).
-    final counterNotifier = ref.read(counterProvider.notifier);
+    final counterNotifier = ref.read(_counterProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

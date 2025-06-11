@@ -1,86 +1,138 @@
-// sign_in_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_flickbuy_app/src/features/auth/controllers/sign_in_controller.dart';
+import '../controllers/auth_controller.dart';
 
-class SignInScreen extends ConsumerWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final signInState = ref.watch(signInControllerProvider);
-    final signInController = ref.read(signInControllerProvider.notifier);
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends ConsumerState<SignInScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _signIn() async {
+    if (_formKey.currentState!.validate()) {
+      await ref
+          .read(authControllerProvider.notifier)
+          .signIn(
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+      // Navigation is handled by GoRouter's redirect logic based on authControllerProvider state.
+    }
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = ref.watch(authControllerProvider);
+
+    ref.listen<AsyncValue>(authControllerProvider, (_, state) {
+      if (state.hasError && !state.isLoading) {
+        // Check !state.isLoading to avoid showing snackbar during optimistic updates or retries
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.error.toString()),
+          ), // Customize error display
+        );
+      }
+    });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0), // Adjusted padding for a bit more space
-        child: Center( // Center the content
-          child: ConstrainedBox( // Constrain the width for larger screens
-            constraints: const BoxConstraints(maxWidth: 400),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch, // Make button stretch
-              children: [
-                Text(
-                  'Welcome Back!',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+      appBar: AppBar(title: const Text('Welcome to FlickBuy')),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  hintText: 'Enter your email',
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceVariant.withOpacity(0.5),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Sign in to your FlickBuy account',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
+                validator: _validateEmail,
+                keyboardType: TextInputType.emailAddress,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  hintText: 'Enter your password',
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceVariant.withOpacity(0.5),
                 ),
-                const SizedBox(height: 32),
-                TextField(
-                  decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
-                  onChanged: signInController.setEmail,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
-                  onChanged: signInController.setPassword,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 24),
-                if (signInState.isLoading)
-                  const Center(child: CircularProgressIndicator())
-                else
-                  FilledButton( // Using FilledButton for M3 primary action
-                    onPressed: signInState.email.isNotEmpty && signInState.password.isNotEmpty
-                        ? signInController.signIn
-                        : null,
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                obscureText: true,
+                validator: _validatePassword,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 16),
+              authState.isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 15,
+                      ),
+                      textStyle: const TextStyle(fontSize: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                     ),
+                    onPressed: _signIn,
                     child: const Text('Sign In'),
                   ),
-                if (signInState.errorMessage != null) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    signInState.errorMessage!,
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-                const SizedBox(height: 20),
-              ],
-            ),
+            ],
           ),
         ),
       ),
     );
   }
 }
-
-// Example of how to navigate to this screen (e.g., from your main.dart or a home page):
-// Navigator.push(
-//   context,
-//   MaterialPageRoute(builder: (context) => const SignInScreen()),
-// );
-
-// Make sure your controller path is correct in the import statement.
-// import 'package:mobile_flickbuy_app/src/features/auth/controllers/sign_in_controller.dart';

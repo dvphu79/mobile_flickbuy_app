@@ -28,4 +28,17 @@ class ProductsRepository {
       throw Exception('Failed to fetch products: ${e.message}');
     }
   }
+
+  Future<Product> fetchProduct(String id) async {
+    try {
+      final response = await _databases.getDocument(
+        databaseId: appwriteDatabaseId,
+        collectionId: appwriteProductsCollectionId,
+        documentId: id,
+      );
+      return Product.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to fetch product $id: $e');
+    }
+  }
 }

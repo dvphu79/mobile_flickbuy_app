@@ -10,6 +10,7 @@ class Product with _$Product {
     required String name,
     required double price,
     @Default('') String imageUrl,
+    @Default('') String description,
   }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) =>

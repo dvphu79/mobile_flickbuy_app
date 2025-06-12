@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile_flickbuy_app/src/features/products/presentation/product_detail_screen.dart';
 
 import '../features/auth/controllers/auth_controller.dart';
 import '../features/auth/domain/app_user.dart'; // Ensure AppUser is imported
@@ -29,6 +30,8 @@ class AuthStateListenable extends ChangeNotifier {
     super.dispose();
   }
 }
+
+enum AppRoute { product }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authListenable = AuthStateListenable(ref);
@@ -90,6 +93,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/signIn',
         builder:
             (BuildContext context, GoRouterState state) => const SignInScreen(),
+      ),
+      GoRoute(
+        path: '/product/:id',
+        name: AppRoute.product.name,
+        builder:
+            (context, state) =>
+                ProductDetailScreen(productId: state.pathParameters['id']!),
       ),
     ],
   );

@@ -32,7 +32,24 @@ class HomeTab extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
+        error: (error, stackTrace) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Error: $error'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => ref.invalidate(productsControllerProvider),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

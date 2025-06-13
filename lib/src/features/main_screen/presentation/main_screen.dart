@@ -23,9 +23,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titles = ['Home', 'Profile'];
     return Scaffold(
-      appBar: AppBar(title: Text(titles[_selectedIndex])),
       body: IndexedStack(
         // Use IndexedStack to preserve tab state
         index: _selectedIndex,

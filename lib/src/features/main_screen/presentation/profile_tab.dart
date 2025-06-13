@@ -11,6 +11,7 @@ class ProfileTab extends ConsumerWidget {
     final authState = ref.watch(authControllerProvider);
 
     return Scaffold(
+      appBar: AppBar(title: Text('Profile')),
       body: Center(
         child: authState.when(
           data: (AppUser? user) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile_flickbuy_app/src/features/cart/controllers/cart_controller.dart';
 import 'package:mobile_flickbuy_app/src/features/products/controllers/product_detail_controller.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,6 +69,19 @@ class ProductDetailScreen extends ConsumerWidget {
                   Text(
                     product.description ?? 'No description available.',
                     style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Assuming 'product.id' is the String ID of the product
+                      ref
+                          .read(cartControllerProvider.notifier)
+                          .addToCart(product.id);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to cart!')),
+                      );
+                    },
+                    child: const Text('Add to Cart'),
                   ),
                 ],
               ),

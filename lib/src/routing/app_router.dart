@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile_flickbuy_app/src/features/cart/presentation/cart_screen.dart';
 import 'package:mobile_flickbuy_app/src/features/products/presentation/product_detail_screen.dart';
 
 import '../features/auth/controllers/auth_controller.dart';
@@ -31,7 +32,7 @@ class AuthStateListenable extends ChangeNotifier {
   }
 }
 
-enum AppRoute { product }
+enum AppRoute { product, cart }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authListenable = AuthStateListenable(ref);
@@ -100,6 +101,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder:
             (context, state) =>
                 ProductDetailScreen(productId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/cart',
+        name: AppRoute.cart.name,
+        builder: (context, state) => CartScreen(),
       ),
     ],
   );

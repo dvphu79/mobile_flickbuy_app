@@ -6,14 +6,15 @@ part of 'sign_in_controller.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_SignInState _$SignInStateFromJson(Map<String, dynamic> json) => _SignInState(
-  email: json['email'] as String? ?? '',
-  password: json['password'] as String? ?? '',
-  isLoading: json['isLoading'] as bool? ?? false,
-  errorMessage: json['errorMessage'] as String?,
-);
+_$SignInStateImpl _$$SignInStateImplFromJson(Map<String, dynamic> json) =>
+    _$SignInStateImpl(
+      email: json['email'] as String? ?? '',
+      password: json['password'] as String? ?? '',
+      isLoading: json['isLoading'] as bool? ?? false,
+      errorMessage: json['errorMessage'] as String?,
+    );
 
-Map<String, dynamic> _$SignInStateToJson(_SignInState instance) =>
+Map<String, dynamic> _$$SignInStateImplToJson(_$SignInStateImpl instance) =>
     <String, dynamic>{
       'email': instance.email,
       'password': instance.password,
@@ -33,16 +34,15 @@ String _$signInControllerHash() => r'5cf831adba39442a272e6173cb93aae4bcdbd892';
 @ProviderFor(SignInController)
 final signInControllerProvider =
     AutoDisposeNotifierProvider<SignInController, SignInState>.internal(
-      SignInController.new,
-      name: r'signInControllerProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$signInControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  SignInController.new,
+  name: r'signInControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$signInControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$SignInController = AutoDisposeNotifier<SignInState>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -34,7 +34,9 @@ abstract class _$ProductDetailController
     extends BuildlessAutoDisposeAsyncNotifier<Product> {
   late final String productId;
 
-  FutureOr<Product> build(String productId);
+  FutureOr<Product> build(
+    String productId,
+  );
 }
 
 /// See also [ProductDetailController].
@@ -47,15 +49,21 @@ class ProductDetailControllerFamily extends Family<AsyncValue<Product>> {
   const ProductDetailControllerFamily();
 
   /// See also [ProductDetailController].
-  ProductDetailControllerProvider call(String productId) {
-    return ProductDetailControllerProvider(productId);
+  ProductDetailControllerProvider call(
+    String productId,
+  ) {
+    return ProductDetailControllerProvider(
+      productId,
+    );
   }
 
   @override
   ProductDetailControllerProvider getProviderOverride(
     covariant ProductDetailControllerProvider provider,
   ) {
-    return call(provider.productId);
+    return call(
+      provider.productId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -75,23 +83,24 @@ class ProductDetailControllerFamily extends Family<AsyncValue<Product>> {
 
 /// See also [ProductDetailController].
 class ProductDetailControllerProvider
-    extends
-        AutoDisposeAsyncNotifierProviderImpl<ProductDetailController, Product> {
+    extends AutoDisposeAsyncNotifierProviderImpl<ProductDetailController,
+        Product> {
   /// See also [ProductDetailController].
-  ProductDetailControllerProvider(String productId)
-    : this._internal(
-        () => ProductDetailController()..productId = productId,
-        from: productDetailControllerProvider,
-        name: r'productDetailControllerProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productDetailControllerHash,
-        dependencies: ProductDetailControllerFamily._dependencies,
-        allTransitiveDependencies:
-            ProductDetailControllerFamily._allTransitiveDependencies,
-        productId: productId,
-      );
+  ProductDetailControllerProvider(
+    String productId,
+  ) : this._internal(
+          () => ProductDetailController()..productId = productId,
+          from: productDetailControllerProvider,
+          name: r'productDetailControllerProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productDetailControllerHash,
+          dependencies: ProductDetailControllerFamily._dependencies,
+          allTransitiveDependencies:
+              ProductDetailControllerFamily._allTransitiveDependencies,
+          productId: productId,
+        );
 
   ProductDetailControllerProvider._internal(
     super._createNotifier, {
@@ -109,7 +118,9 @@ class ProductDetailControllerProvider
   FutureOr<Product> runNotifierBuild(
     covariant ProductDetailController notifier,
   ) {
-    return notifier.build(productId);
+    return notifier.build(
+      productId,
+    );
   }
 
   @override
@@ -130,7 +141,7 @@ class ProductDetailControllerProvider
 
   @override
   AutoDisposeAsyncNotifierProviderElement<ProductDetailController, Product>
-  createElement() {
+      createElement() {
     return _ProductDetailControllerProviderElement(this);
   }
 
@@ -149,8 +160,6 @@ class ProductDetailControllerProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductDetailControllerRef
     on AutoDisposeAsyncNotifierProviderRef<Product> {
   /// The parameter `productId` of this provider.
@@ -158,17 +167,12 @@ mixin ProductDetailControllerRef
 }
 
 class _ProductDetailControllerProviderElement
-    extends
-        AutoDisposeAsyncNotifierProviderElement<
-          ProductDetailController,
-          Product
-        >
-    with ProductDetailControllerRef {
+    extends AutoDisposeAsyncNotifierProviderElement<ProductDetailController,
+        Product> with ProductDetailControllerRef {
   _ProductDetailControllerProviderElement(super.provider);
 
   @override
   String get productId => (origin as ProductDetailControllerProvider).productId;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
